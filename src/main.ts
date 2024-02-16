@@ -1,4 +1,9 @@
-import { Client, GatewayIntentBits, Events } from "discord.js";
+import {
+  Client,
+  GatewayIntentBits,
+  Events,
+  PermissionsBitField,
+} from "discord.js";
 // import hey from "./commands/hey/hey";
 import dotenv from "dotenv";
 import dispatcher from "./commands/dispatcher";
@@ -22,6 +27,12 @@ client.on(Events.MessageCreate, async (message) => {
   console.log(message.content.split(" "));
   if (message.content.split(" ")[0] !== `<@${process.env.APPLICATION_ID}>`)
     return;
+  if (
+    !message.member?.permissions.has(PermissionsBitField.Flags.Administrator)
+  ) {
+    message.reply("botの利用はサーバー管理者のみが可能となっています");
+    return;
+  }
   try {
     await dispatcher(message);
   } catch (error) {

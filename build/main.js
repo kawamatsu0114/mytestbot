@@ -28,12 +28,16 @@ client.once(discord_js_1.Events.ClientReady, (c) => {
     console.log(`準備OKです！ ${c.user.tag}がログインします。`);
 });
 client.on(discord_js_1.Events.MessageCreate, (message) => __awaiter(void 0, void 0, void 0, function* () {
-    var _a;
+    var _a, _b;
     if (((_a = message.mentions.users.first()) === null || _a === void 0 ? void 0 : _a.id) !== process.env.APPLICATION_ID)
         return;
     console.log(message.content.split(" "));
     if (message.content.split(" ")[0] !== `<@${process.env.APPLICATION_ID}>`)
         return;
+    if (!((_b = message.member) === null || _b === void 0 ? void 0 : _b.permissions.has(discord_js_1.PermissionsBitField.Flags.Administrator))) {
+        message.reply("botの利用はサーバー管理者のみが可能となっています");
+        return;
+    }
     try {
         yield (0, dispatcher_1.default)(message);
     }

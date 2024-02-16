@@ -40,30 +40,18 @@ client.on(Events.MessageCreate, async (message) => {
   }
 });
 
-// client.on(Events.InteractionCreate, async (interaction) => {
-//   if (!interaction.isChatInputCommand()) return;
-//   if (interaction.commandName === hey.data.name) {
-//     try {
-//       await hey.execute(interaction, client);
-//     } catch (error) {
-//       console.log(error);
-//       if (interaction.replied || interaction.deferred) {
-//         await interaction.followUp({
-//           content: "コマンド実行時にエラーになりました。",
-//           ephemeral: true,
-//         });
-//       } else {
-//         await interaction.reply({
-//           content: "コマンド実行時にエラーになりました。",
-//           ephemeral: true,
-//         });
-//       }
-//     }
-//   } else {
-//     console.error(
-//       `${interaction.commandName}というコマンドには対応していません。`,
-//     );
-//   }
-// });
-
 client.login(process.env.TOKEN);
+
+/*eslint-disable*/
+declare function require(x: string): any;
+const http = require("http");
+const server = http.createServer(function (request: any, response: any) {
+  response.statusCode = 200;
+  response.setHeader("Content-type", "text/plain");
+  response.write("Hello, TypeScript!");
+  response.end();
+});
+
+server.listen(8080);
+console.log("Server start.");
+/*eslint-enable*/

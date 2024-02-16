@@ -45,29 +45,14 @@ client.on(discord_js_1.Events.MessageCreate, (message) => __awaiter(void 0, void
         console.log(error);
     }
 }));
-// client.on(Events.InteractionCreate, async (interaction) => {
-//   if (!interaction.isChatInputCommand()) return;
-//   if (interaction.commandName === hey.data.name) {
-//     try {
-//       await hey.execute(interaction, client);
-//     } catch (error) {
-//       console.log(error);
-//       if (interaction.replied || interaction.deferred) {
-//         await interaction.followUp({
-//           content: "コマンド実行時にエラーになりました。",
-//           ephemeral: true,
-//         });
-//       } else {
-//         await interaction.reply({
-//           content: "コマンド実行時にエラーになりました。",
-//           ephemeral: true,
-//         });
-//       }
-//     }
-//   } else {
-//     console.error(
-//       `${interaction.commandName}というコマンドには対応していません。`,
-//     );
-//   }
-// });
 client.login(process.env.TOKEN);
+const http = require("http");
+const server = http.createServer(function (request, response) {
+    response.statusCode = 200;
+    response.setHeader("Content-type", "text/plain");
+    response.write("Hello, TypeScript!");
+    response.end();
+});
+server.listen(8080);
+console.log("Server start.");
+/*eslint-enable*/

@@ -1,12 +1,23 @@
 import { Message } from "discord.js";
 import { schedule } from "./schedule";
+import { notreact } from "./notreact";
+import { help } from "./help";
 
-const commands = [schedule];
+const commands = [schedule, notreact];
 
 export default function (message: Message) {
+  const prefix = message.content.split(/\s+/)[1];
   for (const command of commands) {
-    if (message.content.split(" ")[1] === command.prefix) {
+    if (prefix === command.prefix) {
       command.execute(message);
+      return;
     }
+  }
+  if (prefix === "help") {
+    help.execute(message, commands);
+  } else {
+    message.reply(
+      `コマンドの形式が正しくありません。以下のコマンドで存在するコマンドを確認できます\n\`${help.usage}\``,
+    );
   }
 }

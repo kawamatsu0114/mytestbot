@@ -2,8 +2,9 @@ import { Message } from "discord.js";
 import { schedule } from "./schedule";
 import { notreact } from "./notreact";
 import { help } from "./help";
+import { test } from "./test";
 
-const commands = [schedule, notreact];
+const commands = [test, schedule, notreact];
 
 export default function (message: Message) {
   const prefix = message.content.split(/\s+/)[1];

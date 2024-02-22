@@ -6,3 +6,8 @@ export type BotCommand = {
   description: string;
   execute: (message: Message) => void;
 };
+
+export type BotReaction = {
+  reaction: string;
+  execute: (message: Message) => void;
+};

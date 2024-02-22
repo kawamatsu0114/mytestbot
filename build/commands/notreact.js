@@ -39,9 +39,6 @@ exports.notreact = {
             yield channel.send(errorMessage);
             return;
         }
-        for (const member of channel.members) {
-            console.log(member);
-        }
         const referenceMessage = yield channel.messages.fetch(referenceMessageId);
         const guildMembers = Array.from(channel.members.filter((item) => !item.user.bot));
         let reactedUsers = [];

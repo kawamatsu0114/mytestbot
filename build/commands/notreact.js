@@ -25,7 +25,9 @@ exports.notreact = {
     description,
     execute: (message) => __awaiter(void 0, void 0, void 0, function* () {
         var _a;
-        const channel = message.channel;
+        const guild = yield message.guild.fetch();
+        yield guild.members.fetch();
+        const channel = (yield message.channel.fetch());
         const contents = message.content.split(/\s+/);
         if (contents.length !== 2 &&
             (contents.length !== 3 || contents[2] !== "test")) {
@@ -36,6 +38,9 @@ exports.notreact = {
         if (!referenceMessageId) {
             yield channel.send(errorMessage);
             return;
+        }
+        for (const member of channel.members) {
+            console.log(member);
         }
         const referenceMessage = yield channel.messages.fetch(referenceMessageId);
         const guildMembers = Array.from(channel.members.filter((item) => !item.user.bot));

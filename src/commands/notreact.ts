@@ -14,7 +14,10 @@ export const notreact: BotCommand = {
   usage,
   description,
   execute: async (message) => {
-    const channel = message.channel as TextChannel;
+    const guild = await message.guild!.fetch();
+    await guild.members.fetch();
+
+    const channel = (await message.channel.fetch()) as TextChannel;
     const contents = message.content.split(/\s+/);
     if (
       contents.length !== 2 &&

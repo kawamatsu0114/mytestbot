@@ -77,9 +77,6 @@ client.on(Events.MessageReactionAdd, async (reaction, user) => {
     ? await reaction.message.fetch()
     : reaction.message;
   await reactionDispather(message, reaction.emoji.name);
-  console.log(
-    `${reaction.message.guild} で ${user.tag} が ${reaction.emoji.name} をリアクションしました`,
-  );
 });
 
 client.login(process.env.TOKEN);

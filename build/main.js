@@ -78,7 +78,6 @@ client.on(discord_js_1.Events.MessageReactionAdd, (reaction, user) => __awaiter(
         ? yield reaction.message.fetch()
         : reaction.message;
     yield (0, dispatcher_2.default)(message, reaction.emoji.name);
-    console.log(`${reaction.message.guild} で ${user.tag} が ${reaction.emoji.name} をリアクションしました`);
 }));
 client.login(process.env.TOKEN);
 const express = require("express");

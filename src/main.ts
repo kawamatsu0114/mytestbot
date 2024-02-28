@@ -1,18 +1,11 @@
-import { Client, GatewayIntentBits, Events, Partials } from "discord.js";
+import { Client, Events } from "discord.js";
 // import hey from "./commands/hey/hey";
 import dotenv from "dotenv";
 
 dotenv.config();
 
 const client = new Client({
-  intents: [
-    GatewayIntentBits.Guilds,
-    GatewayIntentBits.GuildMessages,
-    GatewayIntentBits.GuildMembers,
-    GatewayIntentBits.MessageContent,
-    GatewayIntentBits.GuildMessageReactions,
-  ],
-  partials: [Partials.Message, Partials.Channel, Partials.Reaction],
+  intents: [],
 });
 
 client.once(Events.ClientReady, (c: Client<true>) => {

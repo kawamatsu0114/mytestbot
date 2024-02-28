@@ -8,14 +8,7 @@ const discord_js_1 = require("discord.js");
 const dotenv_1 = __importDefault(require("dotenv"));
 dotenv_1.default.config();
 const client = new discord_js_1.Client({
-    intents: [
-        discord_js_1.GatewayIntentBits.Guilds,
-        discord_js_1.GatewayIntentBits.GuildMessages,
-        discord_js_1.GatewayIntentBits.GuildMembers,
-        discord_js_1.GatewayIntentBits.MessageContent,
-        discord_js_1.GatewayIntentBits.GuildMessageReactions,
-    ],
-    partials: [discord_js_1.Partials.Message, discord_js_1.Partials.Channel, discord_js_1.Partials.Reaction],
+    intents: [],
 });
 client.once(discord_js_1.Events.ClientReady, (c) => {
     console.log(`準備OKです！ ${c.user.tag}がログインします。`);

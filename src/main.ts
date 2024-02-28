@@ -75,8 +75,15 @@ client.on(Events.MessageReactionAdd, async (reaction, user) => {
     : reaction.message;
   await reactionDispather(message, reaction.emoji.name);
 });
-
-client.login(process.env.TOKEN);
+console.log(process.env);
+client
+  .login(process.env.TOKEN)
+  .then(() => {
+    console.log("success");
+  })
+  .catch(() => {
+    console.log("not success");
+  });
 
 /*eslint-disable*/
 declare function require(x: string): any;

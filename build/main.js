@@ -80,10 +80,5 @@ client.on(discord_js_1.Events.MessageReactionAdd, (reaction, user) => __awaiter(
     yield (0, dispatcher_2.default)(message, reaction.emoji.name);
 }));
 client.login(process.env.TOKEN);
-const express = require("express");
-const app = express();
-const port = 3001;
-app.get("/", (req, res) => res.type("html").send(""));
-const server = app.listen(port, () => console.log(`listening on port ${port}!`));
-server.keepAliveTimeout = 120 * 1000;
+/*eslint-disable*/
 /*eslint-enable*/

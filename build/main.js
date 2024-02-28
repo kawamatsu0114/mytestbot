@@ -13,6 +13,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const discord_js_1 = require("discord.js");
+// import hey from "./commands/hey/hey";
 const dotenv_1 = __importDefault(require("dotenv"));
 const dispatcher_1 = __importDefault(require("./commands/dispatcher"));
 const dispatcher_2 = __importDefault(require("./reactions/dispatcher"));
@@ -25,6 +26,7 @@ const client = new discord_js_1.Client({
         discord_js_1.GatewayIntentBits.MessageContent,
         discord_js_1.GatewayIntentBits.GuildMessageReactions,
     ],
+    partials: [discord_js_1.Partials.Message, discord_js_1.Partials.Channel, discord_js_1.Partials.Reaction],
 });
 client.once(discord_js_1.Events.ClientReady, (c) => {
     console.log(`準備OKです！ ${c.user.tag}がログインします。`);
@@ -77,15 +79,7 @@ client.on(discord_js_1.Events.MessageReactionAdd, (reaction, user) => __awaiter(
         : reaction.message;
     yield (0, dispatcher_2.default)(message, reaction.emoji.name);
 }));
-console.log(process.env);
-client
-    .login(process.env.TOKEN)
-    .then(() => {
-    console.log("success");
-})
-    .catch(() => {
-    console.log("not success");
-});
+client.login(process.env.TOKEN);
 const express = require("express");
 const app = express();
 const port = 3001;

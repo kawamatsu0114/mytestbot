@@ -3,7 +3,9 @@ import {
   GatewayIntentBits,
   Events,
   PermissionsBitField,
+  Partials,
 } from "discord.js";
+// import hey from "./commands/hey/hey";
 import dotenv from "dotenv";
 import commandDispatcher from "./commands/dispatcher";
 import reactionDispather from "./reactions/dispatcher";
@@ -18,6 +20,7 @@ const client = new Client({
     GatewayIntentBits.MessageContent,
     GatewayIntentBits.GuildMessageReactions,
   ],
+  partials: [Partials.Message, Partials.Channel, Partials.Reaction],
 });
 
 client.once(Events.ClientReady, (c: Client<true>) => {
@@ -75,15 +78,8 @@ client.on(Events.MessageReactionAdd, async (reaction, user) => {
     : reaction.message;
   await reactionDispather(message, reaction.emoji.name);
 });
-console.log(process.env);
-client
-  .login(process.env.TOKEN)
-  .then(() => {
-    console.log("success");
-  })
-  .catch(() => {
-    console.log("not success");
-  });
+
+client.login(process.env.TOKEN);
 
 /*eslint-disable*/
 declare function require(x: string): any;

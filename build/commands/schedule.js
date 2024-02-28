@@ -30,7 +30,10 @@ exports.schedule = {
             yield channel.send(errorMessage);
             return;
         }
-        let date = new Date(Date.now() + (new Date().getTimezoneOffset() + 9 * 60) * 60 * 1000);
+        let date = new Date(Date.now() +
+            (new Date().getTimezoneOffset() + 9 * 60) * 60 * 1000 +
+            7 * 24 * 60 * 60 * 1000);
+        console.log(`JST: ${date}`);
         if (contents[2].match(/^([01]?[0-9]|2[0-3]):([0-5][0-9])$/) === null) {
             yield channel.send(errorMessage);
             return;

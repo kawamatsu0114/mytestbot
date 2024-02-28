@@ -79,7 +79,9 @@ client.on(discord_js_1.Events.MessageReactionAdd, (reaction, user) => __awaiter(
         : reaction.message;
     yield (0, dispatcher_2.default)(message, reaction.emoji.name);
 }));
-client.login(process.env.TOKEN);
+client.login(process.env.TOKEN).catch((e) => {
+    console.log(e);
+});
 const express = require("express");
 const app = express();
 const port = 3001;

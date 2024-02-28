@@ -22,8 +22,11 @@ export const schedule: BotCommand = {
       return;
     }
     let date = new Date(
-      Date.now() + (new Date().getTimezoneOffset() + 9 * 60) * 60 * 1000,
+      Date.now() +
+        (new Date().getTimezoneOffset() + 9 * 60) * 60 * 1000 +
+        7 * 24 * 60 * 60 * 1000,
     );
+    console.log(`JST: ${date}`);
     if (contents[2].match(/^([01]?[0-9]|2[0-3]):([0-5][0-9])$/) === null) {
       await channel.send(errorMessage);
       return;

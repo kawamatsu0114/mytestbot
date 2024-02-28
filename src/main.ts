@@ -64,11 +64,13 @@ client.once(Events.ClientReady, (c: Client<true>) => {
 //     : reaction.message;
 //   await reactionDispather(message, reaction.emoji.name);
 // });
-try {
-  client.login(process.env.TOKEN);
-} catch (e) {
-  console.error(e);
-}
+(async () => {
+  try {
+    client.login(process.env.TOKEN);
+  } catch (e) {
+    console.error(e);
+  }
+})();
 /*eslint-disable*/
 declare function require(x: string): any;
 function createServer() {

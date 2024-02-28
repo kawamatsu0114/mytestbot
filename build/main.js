@@ -30,6 +30,7 @@ const client = new discord_js_1.Client({
 });
 client.once(discord_js_1.Events.ClientReady, (c) => {
     console.log(`準備OKです！ ${c.user.tag}がログインします。`);
+    createServer();
 });
 client.on(discord_js_1.Events.MessageCreate, (message) => __awaiter(void 0, void 0, void 0, function* () {
     var _a, _b;
@@ -80,5 +81,12 @@ client.on(discord_js_1.Events.MessageReactionAdd, (reaction, user) => __awaiter(
     yield (0, dispatcher_2.default)(message, reaction.emoji.name);
 }));
 client.login(process.env.TOKEN);
-/*eslint-disable*/
+function createServer() {
+    const express = require("express");
+    const app = express();
+    const port = 3001;
+    app.get("/", (req, res) => res.type("html").send(""));
+    const server = app.listen(port, () => console.log(`listening on port ${port}!`));
+    server.keepAliveTimeout = 120 * 1000;
+}
 /*eslint-enable*/

@@ -25,6 +25,7 @@ const client = new Client({
 
 client.once(Events.ClientReady, (c: Client<true>) => {
   console.log(`準備OKです！ ${c.user.tag}がログインします。`);
+  createServer();
 });
 
 client.on(Events.MessageCreate, async (message) => {
@@ -82,4 +83,17 @@ client.on(Events.MessageReactionAdd, async (reaction, user) => {
 client.login(process.env.TOKEN);
 
 /*eslint-disable*/
+declare function require(x: string): any;
+function createServer() {
+  const express = require("express");
+  const app = express();
+  const port = 3001;
+
+  app.get("/", (req: any, res: any) => res.type("html").send(""));
+
+  const server = app.listen(port, () =>
+    console.log(`listening on port ${port}!`),
+  );
+  server.keepAliveTimeout = 120 * 1000;
+}
 /*eslint-enable*/

@@ -24,6 +24,7 @@ exports.schedule = {
     usage,
     description,
     execute: (message) => __awaiter(void 0, void 0, void 0, function* () {
+        var _a, _b;
         const channel = message.channel;
         const contents = message.content.split(/\s+/);
         if (contents.length !== 3 && contents.length !== 4) {
@@ -33,7 +34,6 @@ exports.schedule = {
         let date = new Date(Date.now() +
             (new Date().getTimezoneOffset() + 9 * 60) * 60 * 1000 +
             7 * 24 * 60 * 60 * 1000);
-        console.log(`JST: ${date}`);
         if (contents[2].match(/^([01]?[0-9]|2[0-3]):([0-5][0-9])$/) === null) {
             yield channel.send(errorMessage);
             return;
@@ -46,13 +46,29 @@ exports.schedule = {
             }
         }
         const daysString = getDaysStringOfWeek(date);
+        const splitDate = contents[2].split(":");
+        let limitMinute = parseInt(splitDate[1], 10) + 30;
+        const limitHour = limitMinute >= 60
+            ? parseInt(splitDate[0], 10) + 2
+            : parseInt(splitDate[0], 10) + 1;
+        if (limitMinute >= 60) {
+            limitMinute -= 60;
+        }
+        const minus30 = (_a = message.guild) === null || _a === void 0 ? void 0 : _a.emojis.cache.get(process.env.MINUS_30_ID || "");
+        const plus30 = (_b = message.guild) === null || _b === void 0 ? void 0 : _b.emojis.cache.get(process.env.PLUS_30_ID || "");
+        if (!minus30 || !plus30) {
+            console.log("カスタム絵文字が見つかりませんでした");
+            return;
+        }
         for (const dayString of daysString) {
             const sendMessage = yield channel.send(`${dayString} ${contents[2]}～`);
             yield sendMessage.react("⭕");
+            yield sendMessage.react(minus30);
+            yield sendMessage.react(plus30);
             yield sendMessage.react("🔺");
             yield sendMessage.react("❌");
         }
-        yield channel.send("@everyone 上記の日程調整に回答お願いします🙇");
+        yield channel.send(`@everyone 上記の日程調整に回答お願いします🙇\n${minus30} : ${limitHour - 2}:${limitMinute}から対応可\n${plus30} : ${limitHour}:${limitMinute}まで対応可`);
     }),
 };
 function getDaysStringOfWeek(date) {

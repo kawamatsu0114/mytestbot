@@ -39,34 +39,37 @@ export const schedule: BotCommand = {
     }
     const daysString = getDaysStringOfWeek(date);
     const splitDate = contents[2].split(":");
-    let limitMinute = parseInt(splitDate[1], 10) + 30;
-    const limitHour =
-      limitMinute >= 60
-        ? parseInt(splitDate[0], 10) + 2
-        : parseInt(splitDate[0], 10) + 1;
-    if (limitMinute >= 60) {
-      limitMinute -= 60;
-    }
+    const minute = parseInt(splitDate[1], 10);
+    const hour = parseInt(splitDate[0], 10);
+    const nijumaru = message.guild?.emojis.cache.get(
+      process.env.NIJUMARU_ID || "",
+    );
     const minus30 = message.guild?.emojis.cache.get(
       process.env.MINUS_30_ID || "",
     );
     const plus30 = message.guild?.emojis.cache.get(
       process.env.PLUS_30_ID || "",
     );
-    if (!minus30 || !plus30) {
+    if (!minus30 || !plus30 || !nijumaru) {
       console.log("カスタム絵文字が見つかりませんでした");
       return;
     }
+    const minusCondition = minute < 30;
     for (const dayString of daysString) {
       const sendMessage = await channel.send(`${dayString} ${contents[2]}～`);
-      await sendMessage.react("⭕");
+      await sendMessage.react(nijumaru);
       await sendMessage.react(minus30);
       await sendMessage.react(plus30);
+      await sendMessage.react("⭕");
       await sendMessage.react("🔺");
       await sendMessage.react("❌");
     }
     await channel.send(
-      `@everyone 上記の日程調整に回答お願いします🙇\n${minus30} : ${limitHour - 2}:${limitMinute}から対応可\n${plus30} : ${limitHour}:${limitMinute}まで対応可`,
+      `@everyone 上記の日程調整に回答お願いします🙇\n` +
+        `${nijumaru} : 時間制約なし\n` +
+        `${minus30} : ${minusCondition ? (hour - 1).toString().padStart(2, "0") : hour.toString().padStart(2, "0")}:${minusCondition ? minute + 30 : (minute - 30).toString().padStart(2, "0")}～${(hour + 1).toString().padStart(2, "0")}:${minute.toString().padStart(2, "0")}可\n` +
+        `${plus30} : ${contents[2]}～${minusCondition ? (hour + 1).toString().padStart(2, "0") : (hour + 2).toString().padStart(2, "0")}:${minusCondition ? minute + 30 : (minute - 30).toString().padStart(2, "0")}可\n` +
+        `⭕ : ${contents[2]}～${(hour + 1).toString().padStart(2, "0")}:${minute.toString().padStart(2, "0")}可`,
     );
   },
 };

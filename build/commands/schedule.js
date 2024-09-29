@@ -24,7 +24,7 @@ exports.schedule = {
     usage,
     description,
     execute: (message) => __awaiter(void 0, void 0, void 0, function* () {
-        var _a, _b;
+        var _a, _b, _c;
         const channel = message.channel;
         const contents = message.content.split(/\s+/);
         if (contents.length !== 3 && contents.length !== 4) {
@@ -47,28 +47,30 @@ exports.schedule = {
         }
         const daysString = getDaysStringOfWeek(date);
         const splitDate = contents[2].split(":");
-        let limitMinute = parseInt(splitDate[1], 10) + 30;
-        const limitHour = limitMinute >= 60
-            ? parseInt(splitDate[0], 10) + 2
-            : parseInt(splitDate[0], 10) + 1;
-        if (limitMinute >= 60) {
-            limitMinute -= 60;
-        }
-        const minus30 = (_a = message.guild) === null || _a === void 0 ? void 0 : _a.emojis.cache.get(process.env.MINUS_30_ID || "");
-        const plus30 = (_b = message.guild) === null || _b === void 0 ? void 0 : _b.emojis.cache.get(process.env.PLUS_30_ID || "");
-        if (!minus30 || !plus30) {
+        const minute = parseInt(splitDate[1], 10);
+        const hour = parseInt(splitDate[0], 10);
+        const nijumaru = (_a = message.guild) === null || _a === void 0 ? void 0 : _a.emojis.cache.get(process.env.NIJUMARU_ID || "");
+        const minus30 = (_b = message.guild) === null || _b === void 0 ? void 0 : _b.emojis.cache.get(process.env.MINUS_30_ID || "");
+        const plus30 = (_c = message.guild) === null || _c === void 0 ? void 0 : _c.emojis.cache.get(process.env.PLUS_30_ID || "");
+        if (!minus30 || !plus30 || !nijumaru) {
             console.log("カスタム絵文字が見つかりませんでした");
             return;
         }
+        const minusCondition = minute < 30;
         for (const dayString of daysString) {
             const sendMessage = yield channel.send(`${dayString} ${contents[2]}～`);
-            yield sendMessage.react("⭕");
+            yield sendMessage.react(nijumaru);
             yield sendMessage.react(minus30);
             yield sendMessage.react(plus30);
+            yield sendMessage.react("⭕");
             yield sendMessage.react("🔺");
             yield sendMessage.react("❌");
         }
-        yield channel.send(`@everyone 上記の日程調整に回答お願いします🙇\n${minus30} : ${limitHour - 2}:${limitMinute}から対応可\n${plus30} : ${limitHour}:${limitMinute}まで対応可`);
+        yield channel.send(`@everyone 上記の日程調整に回答お願いします🙇\n` +
+            `${nijumaru} : 時間制約なし\n` +
+            `${minus30} : ${minusCondition ? (hour - 1).toString().padStart(2, "0") : hour.toString().padStart(2, "0")}:${minusCondition ? minute + 30 : (minute - 30).toString().padStart(2, "0")}～${(hour + 1).toString().padStart(2, "0")}:${minute.toString().padStart(2, "0")}可\n` +
+            `${plus30} : ${contents[2]}～${minusCondition ? (hour + 1).toString().padStart(2, "0") : (hour + 2).toString().padStart(2, "0")}:${minusCondition ? minute + 30 : (minute - 30).toString().padStart(2, "0")}可\n` +
+            `⭕ : ${contents[2]}～${(hour + 1).toString().padStart(2, "0")}:${minute.toString().padStart(2, "0")}可`);
     }),
 };
 function getDaysStringOfWeek(date) {
